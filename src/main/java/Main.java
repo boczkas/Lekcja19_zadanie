@@ -46,12 +46,21 @@ public class Main {
 
         List<Bohater> calkiemZdrowiBohaterowie = new ArrayList<>();
 //        Tutaj uzupelnij liste za pomoca streama
+        calkiemZdrowiBohaterowie = bohaterowie.stream()
+                .filter(b -> b.getProcentZycia() > 50)
+                .collect(Collectors.toList());
 
         wypisywaczkaBohaterow("Bohaterowie ktorych ilosc zycia przekracza 50% to:",
                 calkiemZdrowiBohaterowie);
 
+
         List<Bohater> bohaterki = new ArrayList<>();
         //        Tutaj uzupelnij liste za pomoca streama
+        bohaterki = bohaterowie.stream()
+                .filter(b -> b.getTyp().equals(Typ.AMAZONKA) ||
+                        b.getTyp().equals(Typ.ZABOJCZYNI) ||
+                        b.getTyp().equals(Typ.CZARODZIEJKA))
+                .collect(Collectors.toList());
 
         wypisywaczkaBohaterow("Bohaterki to (Amazonka, Zabojczyni, Czarodziejka):",
                 bohaterki);
@@ -61,7 +70,10 @@ public class Main {
 
         System.out.println("R.I.P. :");
         //        Tutaj uzupelnij liste za pomoca streama
-        List<Szkielet> szkielety = new ArrayList<>();
+        List<Szkielet> szkielety = bohaterowie.stream()
+                .filter(bohater -> !bohater.getTyp().equals(Typ.NEKROMANTA))
+                .map(bohater -> new Szkielet(bohater.getImie()))
+                .collect(Collectors.toList());
 
         wypisywaczkaSzkieletow(szkielety);
 
@@ -71,6 +83,10 @@ public class Main {
         long unikatoweImiona = 0;
 
 //        Wylicz za pomoca streama ile Szkieletow ma unikatowe imie
+        unikatoweImiona = szkielety.stream()
+                .map(Szkielet::getImie)
+                .distinct()
+                .count();
         System.out.println(" z czego " + unikatoweImiona + " ma unikatowe imie!");
     }
 
